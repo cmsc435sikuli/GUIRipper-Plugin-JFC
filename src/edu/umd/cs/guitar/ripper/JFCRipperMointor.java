@@ -33,6 +33,7 @@ import java.util.List;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleAction;
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleText;
 
 import org.apache.log4j.Logger;
 import org.netbeans.jemmy.QueueTool;
@@ -279,7 +280,7 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 * 
 	 * @param window
 	 *            the window to consider
-     * @return true/false
+	 * @return true/false
 	 */
 	private boolean isValidRootWindow(Frame window) {
 
@@ -311,13 +312,11 @@ public class JFCRipperMointor extends GRipperMonitor {
 	boolean isExpandable(GComponent component, GWindow window) {
 
 		JFCXComponent jComponent = (JFCXComponent) component;
-
 		Accessible aComponent = jComponent.getAComponent();
 
 		if (aComponent == null)
 			return false;
 
-		// String ID = component.getFullID();
 		String ID = component.getTitle();
 		if (ID == null)
 			return false;
@@ -335,6 +334,17 @@ public class JFCRipperMointor extends GRipperMonitor {
 		if (component.getTypeVal().equals(GUITARConstants.TERMINAL))
 			return false;
 
+		// Check for more details
+		AccessibleContext aContext = aComponent.getAccessibleContext();
+
+		if (aContext == null)
+			return false;
+
+		AccessibleText aText = aContext.getAccessibleText();
+		
+		if (aText != null)
+			return false;
+		
 		return true;
 	}
 
@@ -342,7 +352,7 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 * Check if a component is click-able.
 	 * 
 	 * @param component
-     * @return true/false
+	 * @return true/false
 	 */
 	private boolean isClickable(Accessible component) {
 
