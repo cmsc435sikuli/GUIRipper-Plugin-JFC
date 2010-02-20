@@ -33,7 +33,9 @@ import java.util.List;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleAction;
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleSelection;
 import javax.accessibility.AccessibleText;
+import javax.accessibility.AccessibleValue;
 
 import org.apache.log4j.Logger;
 import org.netbeans.jemmy.QueueTool;
@@ -189,7 +191,6 @@ public class JFCRipperMointor extends GRipperMonitor {
 		// try {
 		// Thread.sleep(configuration.DELAY);
 		// } catch (InterruptedException e) {
-		// e.printStackTrace();
 		// }
 	}
 
@@ -267,8 +268,7 @@ public class JFCRipperMointor extends GRipperMonitor {
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GUITARLog.log.error(e);
 		}
 		return retWindowList;
 	}
@@ -341,10 +341,12 @@ public class JFCRipperMointor extends GRipperMonitor {
 			return false;
 
 		AccessibleText aText = aContext.getAccessibleText();
-		
+		AccessibleSelection aSelect = aContext.getAccessibleSelection();
+
+		GUITARLog.log.debug("CHANGE!!!");
 		if (aText != null)
 			return false;
-		
+
 		return true;
 	}
 
@@ -489,18 +491,18 @@ public class JFCRipperMointor extends GRipperMonitor {
 						+ configuration.INITIAL_WAITING_TIME + "ms...");
 				Thread.sleep(configuration.INITIAL_WAITING_TIME);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				GUITARLog.log.error(e);
 			}
 
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GUITARLog.log.error(e);
 		} catch (ApplicationConnectException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GUITARLog.log.error(e);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			GUITARLog.log.error(e);
 		}
 
 		// -----------------------------
