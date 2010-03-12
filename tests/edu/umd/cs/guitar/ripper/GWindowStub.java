@@ -99,7 +99,6 @@ public class GWindowStub extends GWindow{
      * 
      * @return null
      */
-	@Override
 	public String getFullID() {
 		// TODO Auto-generated method stub
 		return null;
@@ -109,10 +108,12 @@ public class GWindowStub extends GWindow{
      * 
      * @return "Name"
      */
-	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return "Name";
 	}
 
+	public String getTitle(){
+	return null;//need to return real title here
+	}
 }

@@ -146,7 +146,6 @@ public class GComponentStub extends GComponent{
      * 
      * @return null
      */
-	@Override
 	public String getFullID() {
 		// TODO Auto-generated method stub
 		return null;
@@ -160,4 +159,11 @@ public class GComponentStub extends GComponent{
 		ct=(ComponentTypeStub)c;
 	}
 	
+	public boolean isEnable(){
+	return false;//real value needs to be put here
+	}
+	
+	public String getTitle(){
+	return null;//need to return actual value here
+	}
 }

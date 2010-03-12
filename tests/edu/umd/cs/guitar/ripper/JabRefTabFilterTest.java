@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 
 import edu.umd.cs.guitar.model.*;
 import edu.umd.cs.guitar.model.data.*;
-import edu.umd.cs.guitar.ripper.testcase.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,16 +28,18 @@ public class JabRefTabFilterTest extends TestCase {
 	 * ensures that a valid object is always returned. 
 	 */
 	public void testGetInstance() {
-		GComponentFilter testJabRefTabFilter;
+		/*GComponentFilter testJabRefTabFilter;
 		testJabRefTabFilter=JabRefTabFilter.getInstance();
-		assertNotNull(testJabRefTabFilter);
+		assertNotNull(testJabRefTabFilter);*/
+		//JabRefTabFilter no longer a class
 	}
 	/**testIsProcessGComponentGWindow ensures that IsProcess always returns false
 	 */
 	public void testIsProcessGComponentGWindow() {
-		GComponentFilter testJabRefTabFilter;
+		/*GComponentFilter testJabRefTabFilter;
 		testJabRefTabFilter=JabRefTabFilter.getInstance();		
-		assertFalse(testJabRefTabFilter.isProcess(component,window));
+		assertFalse(testJabRefTabFilter.isProcess(component,window));*/
+		//JabRefTabFilter no longer a class
 	}
 	/**RipComponentGComponentGWindow has a debug call in it that pauses execution
 	 *and is therefore unsuitable for testing 
