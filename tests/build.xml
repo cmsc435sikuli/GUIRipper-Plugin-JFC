@@ -162,7 +162,7 @@
   <target name="report" description="Compile the Cobertura Code Coverage Report" depends="execute">
     <mkdir dir="${coverage.dir}" />
     <delete file="${coverage.dir}/*.html" />
-    <cobertura-report format="xml" destdir="${coverage.dir}" srcdir="${src.dir}"  datafile="${coverage.dir}/cobertura.ser" />
+    <cobertura-report format="xml" destdir="${coverage.dir}" srcdir="../${src.dir}"  datafile="${coverage.dir}/cobertura.ser" />
     <cobertura-report format="html" destdir="${coverage.dir}" srcdir="${src.dir}"  datafile="${coverage.dir}/cobertura.ser" />
   </target>
 
