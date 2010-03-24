@@ -162,10 +162,7 @@
   <target name="report" description="Compile the Cobertura Code Coverage Report" depends="execute">
     <mkdir dir="${coverage.dir}" />
     <delete file="${coverage.dir}/*.html" />
-    <cobertura-report format="xml" destdir="${coverage.dir}" datafile="${coverage.dir}/cobertura.ser">
-	<fileset dir="${src.dir}">
-		<include name="**/*.java" />
-	</fileset>
+    <cobertura-report format="xml" srcdir="./GUIRipper-Plugin-JFC/src" destdir="${coverage.dir}" datafile="${coverage.dir}/cobertura.ser">
     </cobertura-report>
 
     <cobertura-report format="html" destdir="${coverage.dir}" srcdir="${src.dir}"  datafile="${coverage.dir}/cobertura.ser" />
