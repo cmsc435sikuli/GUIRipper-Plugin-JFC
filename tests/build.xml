@@ -16,7 +16,7 @@
 
   <!-- Second Party Dependencies Included in Distribution -->
 
-  <fileset id="guitarlib.file.ref" dir="${shared.lib.dir}/${guitar.lib.dir}" erroronmissingdir="false">
+  <fileset id="guitarlib.file.ref" dir="${guitar.lib.dir}" erroronmissingdir="false">
     <include name="${guitarmodel.lib}" />
   </fileset >
 
@@ -88,7 +88,7 @@
     <delete file="${coverage.dir}/cobertura.ser" />
 
     <cobertura-instrument datafile="${coverage.dir}/cobertura.ser" todir="${jar.dir}" >
-      <fileset dir="${dist.dir}/${dist.lib.dir}">
+      <fileset dir="${dist.lib.dir}">
 	<include name="${module}.jar" />
       </fileset>
     </cobertura-instrument>
@@ -127,6 +127,10 @@
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.dir}/cobertura.ser" />
 
       <classpath>
+	<path refid="cobertura.lib" />
+      </classpath>
+
+      <classpath>
 	<pathelement location="${jar.dir}/${module}.jar" />
       </classpath>
       
@@ -140,7 +144,6 @@
      </classpath>
 
       <classpath>
-	<path refid="cobertura.lib" />
 	<path refid="junit.lib" />
       </classpath>
       
