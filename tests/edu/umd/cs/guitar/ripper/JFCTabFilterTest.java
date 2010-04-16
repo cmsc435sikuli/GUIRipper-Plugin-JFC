@@ -14,6 +14,7 @@ import javax.swing.JTabbedPane;
 import edu.umd.cs.guitar.model.JFCXComponent;
 import edu.umd.cs.guitar.model.JFCXWindow;
 import edu.umd.cs.guitar.model.data.ComponentType;
+import edu.umd.cs.guitar.ripper.mockClasses.GComponentFilter;
 
 import junit.framework.TestCase;
 /**
@@ -68,8 +69,13 @@ public class JFCTabFilterTest extends TestCase {
 		OneWindow w = new OneWindow();
 		JFCWindowStub f = new JFCWindowStub(w);
 		JFCXComponent c2 = new JFCXComponent(w.tabbedPane);
-		test.ripper=new RipperStub ();
+		
+		test.ripper=new RipperStub();
+		//New
+		//Ripper Never had a monitor Set, So it was creating a Null Pointer Exception
+		test.ripper.setMonitor(new JFCRipperMointor(new JFCRipperConfiguration()));
 		a=test.ripComponent(c2,f);
+		
 		assertEquals(a.getAttributes().getProperty().size(),16);
 		if(a.getAttributes().getProperty().size()>0){
 			assertEquals("[javax.swing.JTabbedPane]",a.getAttributes().getProperty().get(1).getValue().toString());
