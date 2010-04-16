@@ -73,10 +73,9 @@
   <!-- Build the GUIRipper -->
 
   <target description="Build dependencies" name="build-deps">
-    <delete file="../../jars/GUIRipper-Plugin-JFC.jar" />
-    <ant antfile="build.xml" target="dist" dir="../install" inheritAll="false">
+    <ant antfile="../install/build.xml" target="dist" dir="${basedir}" inheritAll="false">
       <property name="debug" value="true" />
-      <property file="../install/build.properties" />
+      <property file="install/build.properties" />
     </ant>
   </target>
 
