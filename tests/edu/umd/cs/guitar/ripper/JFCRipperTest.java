@@ -58,12 +58,11 @@ public class JFCRipperTest extends TestCase {
 	 * */
 	public void testOneWindow() {
 		JFCRipperConfiguration config = new JFCRipperConfiguration();
-		JFCRipperConfiguration.MAIN_CLASS="OneWindow";
+		JFCRipperConfiguration.MAIN_CLASS="edu.umd.cs.guitar.ripper.testcase.OneWindow";
 		JFCRipper ripper = new JFCRipper(config);
 		try{
 			ripper.execute();
-			//use lRippedWindowTitles rather than lRippedWindw which exists inside the monitor not ripper.
-			assertEquals(1,ripper.ripper.lRippedWindowTitles.size());
+			assertEquals(1,ripper.ripper.lRippedWindow.size());
 		}catch(Exception e){
 			fail("Exception Occured");
 		}
@@ -73,15 +72,11 @@ public class JFCRipperTest extends TestCase {
 	 * testOneWindow runs the program on the mock GUI testOneWindow2 with a user defined configuration
 	 * and ensures 2 objects are found in the GUI Structure 
 	 * 
-	 * NEW
-	 * EDIT: Config_file was set to wrong location.
-	 * 	     And Wrong Main_Class was being used.
 	 * */
 	public void testOneWindow2() {
 		JFCRipperConfiguration config = new JFCRipperConfiguration();
-		JFCRipperConfiguration.CONFIG_FILE="configuration.xml";
-		JFCRipperConfiguration.MAIN_CLASS="OneWindow";
-		
+		JFCRipperConfiguration.CONFIG_FILE="test" + File.separator + "configuration.xml";
+		JFCRipperConfiguration.MAIN_CLASS="edu.umd.cs.guitar.ripper.testcase.OneWindow";
 		JFCRipper ripper = new JFCRipper(config);
 		try{
 			ripper.execute();

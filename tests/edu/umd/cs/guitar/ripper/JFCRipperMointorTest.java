@@ -2,7 +2,6 @@ package edu.umd.cs.guitar.ripper;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.accessibility.*;
 import javax.swing.*;
@@ -66,7 +65,7 @@ public class JFCRipperMointorTest extends TestCase {
 	 * */
 	public void testSetUp3() {
 		int len = Frame.getFrames().length;
-		JFCRipperConfiguration.MAIN_CLASS="OneWindow";
+		JFCRipperConfiguration.MAIN_CLASS="edu.umd.cs.guitar.ripper.testcase.OneWindow";
 		monitor.setUp();
 		assertEquals(len+1,Frame.getFrames().length);
 	}
@@ -114,13 +113,13 @@ public class JFCRipperMointorTest extends TestCase {
 		assertEquals("blah2",JFCRipperConfiguration.MAIN_CLASS);
 	}
 	 /** Tests closeWindow by ensuring a mock window is set to invisible after closeWindow is called on it*/
-	/*public void testCloseWindowGWindow() {
+	public void testCloseWindowGWindow() {
 		OneWindow w = new OneWindow();
 		JFCWindowStub f = new JFCWindowStub(w);
 		assertTrue(f.getWindow().isVisible());
 		monitor.closeWindow(f);
 		assertFalse(f.getWindow().isVisible());
-	}*/
+	}
 
 	/** Tests expandGUI by ensuring 
 	 * getOpenedWindowCache=0
@@ -164,41 +163,24 @@ public class JFCRipperMointorTest extends TestCase {
 	 * 1 when tempOpenedWinStack.size>0*/
 	public void testGetOpenedWindowCache() {
 		assertEquals(monitor.getOpenedWindowCache().size(),0);
-		
-		//New
-		//Null is not a valid window Name according to JFCXWindow.
-		//so it throws an exception
-		//So Changed from null to OneWindow example
-		//Had to change access of class OneWindow to public at the bottom.
-		//Then diposes window as it is no longer needed
-		OneWindow newW = new OneWindow();
-		monitor.tempOpenedWinStack.add(newW);
+		monitor.tempOpenedWinStack.add(null);
 		assertEquals(monitor.getOpenedWindowCache().size(),1);
-		newW.dispose();
 	}
 	/** Tests getClosedWindowCache by ensuring 0 is returned when tempClosedWinStack.size=0 and 
 	 * 1 when tempClosedWinStack.size>0*/
 	public void testGetClosedWindowCache() {
 		assertEquals(monitor.getClosedWindowCache().size(),0);
-		//New
-		//Same Problem as testGetOpenedWindowCache()
-		OneWindow newW = new OneWindow();
-		monitor.tempClosedWinStack.add(newW);		
+		monitor.tempClosedWinStack.add(null);		
 		assertEquals(monitor.getClosedWindowCache().size(),1);
-		newW.dispose();
 	}
 	/** Tests the number of root windows found by getRootWindows by running
 	 * it on a null GUI an Invisible GUI and GUI and opens One Window
 	 * */
 	public void testGetRootWindows() {
 		int len = monitor.getRootWindows().size();
-		
-		assertEquals(1,len);
+		assertEquals(1,monitor.getRootWindows().size());
 		OneWindow newW = new OneWindow();
-		
-	
 		assertEquals(2,monitor.getRootWindows().size());
-		
 		NoWindow invisibleW = new NoWindow();
 		assertEquals(2,monitor.getRootWindows().size());
 		newW.dispose();
@@ -210,8 +192,7 @@ public class JFCRipperMointorTest extends TestCase {
 	public void testGetRootWindows2() {
 		monitor.sRootWindows.add("OneWindow testcase");
 		OneWindow newW1 = new OneWindow();
-		newW1.setTitle("OneWindow testcase");
-		assertEquals(1,monitor.sRootWindows.size());
+		assertEquals(1,monitor.getRootWindows().size());
 		newW1.dispose();
 	}
 	
@@ -254,7 +235,6 @@ public class JFCRipperMointorTest extends TestCase {
 		b.setName("title");
 		assertFalse(monitor.isExpandable(b, null));
 		b.Type="non-terminal";
-		//isExpnadible is return false for non terminal must be change in the source code
 		assertTrue(monitor.isExpandable(b, null));
 	}
 	/**
@@ -265,7 +245,6 @@ public class JFCRipperMointorTest extends TestCase {
 		b.setName("title");
 		assertFalse(monitor.isExpandable(b, null));
 		b.Type="non-terminal";
-		//isExpnadible is return false for non terminal must be change in the source code
 		assertTrue(monitor.isExpandable(b, null));
 	}
 		
@@ -290,7 +269,7 @@ public class JFCRipperMointorTest extends TestCase {
 	/**
 	 * The OneWindow class is a Mock GUI that is used to create a visible GUI
 	 */
-	public class OneWindow extends Frame{
+	class OneWindow extends Frame{
 		OneWindow(){
 			this.setVisible(true);
 		}
@@ -298,7 +277,7 @@ public class JFCRipperMointorTest extends TestCase {
 	/**
 	 * The OneWindow class is a Mock GUI that is used to create an invisible GUI
 	 */
-	public class NoWindow extends Frame{
+	class NoWindow extends Frame{
 		NoWindow(){
 			this.setVisible(false);
 		}
