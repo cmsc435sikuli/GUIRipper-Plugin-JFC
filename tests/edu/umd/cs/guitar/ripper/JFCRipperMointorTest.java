@@ -2,6 +2,7 @@ package edu.umd.cs.guitar.ripper;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.accessibility.*;
 import javax.swing.*;
@@ -65,7 +66,7 @@ public class JFCRipperMointorTest extends TestCase {
 	 * */
 	public void testSetUp3() {
 		int len = Frame.getFrames().length;
-		JFCRipperConfiguration.MAIN_CLASS="edu.umd.cs.guitar.ripper.testcase.OneWindow";
+		JFCRipperConfiguration.MAIN_CLASS="OneWindow";
 		monitor.setUp();
 		assertEquals(len+1,Frame.getFrames().length);
 	}
@@ -163,24 +164,39 @@ public class JFCRipperMointorTest extends TestCase {
 	 * 1 when tempOpenedWinStack.size>0*/
 	public void testGetOpenedWindowCache() {
 		assertEquals(monitor.getOpenedWindowCache().size(),0);
-		monitor.tempOpenedWinStack.add(null);
+		
+		//New
+		//Null is not a valid window Name according to JFCXWindow.
+		//so it throws an exception
+		//So Changed from null to OneWindow example
+		//Had to change access of class OneWindow to public at the bottom.
+		//Then diposes window as it is no longer needed
+		OneWindow newW = new OneWindow();
+		monitor.tempOpenedWinStack.add(newW);
 		assertEquals(monitor.getOpenedWindowCache().size(),1);
+		newW.dispose();
 	}
 	/** Tests getClosedWindowCache by ensuring 0 is returned when tempClosedWinStack.size=0 and 
 	 * 1 when tempClosedWinStack.size>0*/
 	public void testGetClosedWindowCache() {
 		assertEquals(monitor.getClosedWindowCache().size(),0);
-		monitor.tempClosedWinStack.add(null);		
+		//New
+		//Same Problem as testGetOpenedWindowCache()
+		OneWindow newW = new OneWindow();
+		monitor.tempClosedWinStack.add(newW);		
 		assertEquals(monitor.getClosedWindowCache().size(),1);
+		newW.dispose();
 	}
 	/** Tests the number of root windows found by getRootWindows by running
 	 * it on a null GUI an Invisible GUI and GUI and opens One Window
 	 * */
 	public void testGetRootWindows() {
 		int len = monitor.getRootWindows().size();
-		assertEquals(1,monitor.getRootWindows().size());
+		assertEquals(1,len);
 		OneWindow newW = new OneWindow();
+	
 		assertEquals(2,monitor.getRootWindows().size());
+		
 		NoWindow invisibleW = new NoWindow();
 		assertEquals(2,monitor.getRootWindows().size());
 		newW.dispose();
@@ -192,7 +208,8 @@ public class JFCRipperMointorTest extends TestCase {
 	public void testGetRootWindows2() {
 		monitor.sRootWindows.add("OneWindow testcase");
 		OneWindow newW1 = new OneWindow();
-		assertEquals(1,monitor.getRootWindows().size());
+		newW1.setTitle("OneWindow testcase");
+		assertEquals(0,monitor.getRootWindows().size());
 		newW1.dispose();
 	}
 	
@@ -269,7 +286,7 @@ public class JFCRipperMointorTest extends TestCase {
 	/**
 	 * The OneWindow class is a Mock GUI that is used to create a visible GUI
 	 */
-	class OneWindow extends Frame{
+	public class OneWindow extends Frame{
 		OneWindow(){
 			this.setVisible(true);
 		}
@@ -277,7 +294,7 @@ public class JFCRipperMointorTest extends TestCase {
 	/**
 	 * The OneWindow class is a Mock GUI that is used to create an invisible GUI
 	 */
-	class NoWindow extends Frame{
+	public class NoWindow extends Frame{
 		NoWindow(){
 			this.setVisible(false);
 		}
@@ -306,11 +323,20 @@ public class JFCRipperMointorTest extends TestCase {
 				return Type;
 		}
 	}
-	/*public class MyEventQueue extends EventQueue {
+	
+	public void CoverageEventDipatch() {
+		OneWindow onewin = new OneWindow();
+		MyEventQueue e = new MyEventQueue();
+		WindowEvent w1= new WindowEvent(onewin,WindowEvent.WINDOW_OPENED);
+
+		e.dispatchEvent(w1);
+	}
+	
+	public class MyEventQueue extends EventQueue {
 		  protected void dispatchEvent(AWTEvent event) {
 		    // the only functionality I add is that I print out all the events
 		    //System.out.println(event);
 		    super.dispatchEvent(event);
 		  }
-		}*/
+		}
 }
