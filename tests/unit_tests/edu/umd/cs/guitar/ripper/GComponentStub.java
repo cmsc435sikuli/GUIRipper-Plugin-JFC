@@ -10,7 +10,7 @@ import edu.umd.cs.guitar.model.data.PropertyType;
  * GComponentStub is a Mock Object Class for GComponent. This class
  * hold the GUITAR represenation of a compoent
  */
-public class GComponentStub extends GComponent{
+public class GComponentStub extends JFCXComponent{
 
 	/** Component Type */
 	String Type;
@@ -25,6 +25,7 @@ public class GComponentStub extends GComponent{
 	/** Dummy Constructor...initializes variables*/
 	public GComponentStub() {
 		// TODO Auto-generated constructor stub
+		super(null);
 		Name="";
 		Type="";
 	}
@@ -163,7 +164,9 @@ public class GComponentStub extends GComponent{
 	return false;//real value needs to be put here
 	}
 	
+	//New
+	//Returns "Name" since this is what was used for name above
 	public String getTitle(){
-	return null;//need to return actual value here
+	return "Name";//need to return actual value here
 	}
 }

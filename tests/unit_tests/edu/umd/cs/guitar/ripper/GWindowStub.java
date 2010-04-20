@@ -114,6 +114,6 @@ public class GWindowStub extends GWindow{
 	}
 
 	public String getTitle(){
-	return null;//need to return real title here
+		return this.getName(); //added to fix testIgnoredWindowGWindow test in JFCRipperMonitorTest.java
 	}
 }

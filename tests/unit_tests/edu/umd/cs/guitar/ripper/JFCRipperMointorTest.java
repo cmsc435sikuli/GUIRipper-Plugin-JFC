@@ -114,13 +114,13 @@ public class JFCRipperMointorTest extends TestCase {
 		assertEquals("blah2",JFCRipperConfiguration.MAIN_CLASS);
 	}
 	 /** Tests closeWindow by ensuring a mock window is set to invisible after closeWindow is called on it*/
-	/*public void testCloseWindowGWindow() {
+	public void testCloseWindowGWindow() {
 		OneWindow w = new OneWindow();
 		JFCWindowStub f = new JFCWindowStub(w);
 		assertTrue(f.getWindow().isVisible());
 		monitor.closeWindow(f);
 		assertFalse(f.getWindow().isVisible());
-	}*/
+	}
 
 	/** Tests expandGUI by ensuring 
 	 * getOpenedWindowCache=0
@@ -192,15 +192,13 @@ public class JFCRipperMointorTest extends TestCase {
 	 * */
 	public void testGetRootWindows() {
 		int len = monitor.getRootWindows().size();
-		assertEquals(0,len);
+		assertEquals(1,len);
 		OneWindow newW = new OneWindow();
-		//0 because window is added to root Window list when monitor.setup() is called though
-		//ripper.execute();
 	
-		assertEquals(0,monitor.getRootWindows().size());
-		//invisible window is not added to the root Window list
+		assertEquals(2,monitor.getRootWindows().size());
+		
 		NoWindow invisibleW = new NoWindow();
-		assertEquals(0,monitor.getRootWindows().size());
+		assertEquals(2,monitor.getRootWindows().size());
 		newW.dispose();
 		invisibleW.dispose();
 	}
@@ -211,7 +209,7 @@ public class JFCRipperMointorTest extends TestCase {
 		monitor.sRootWindows.add("OneWindow testcase");
 		OneWindow newW1 = new OneWindow();
 		newW1.setTitle("OneWindow testcase");
-		assertEquals(2,monitor.getRootWindows().size());
+		assertEquals(0,monitor.getRootWindows().size());
 		newW1.dispose();
 	}
 	
@@ -249,6 +247,7 @@ public class JFCRipperMointorTest extends TestCase {
 	/**
 	 * Checks if IsExpandable can handle a terminal object
 	 */
+/*
 	public void testIsExpandableGComponentGWindow4() {
 		dummyComponent b =  new dummyComponent(new JButton());
 		b.setName("title");
@@ -256,6 +255,7 @@ public class JFCRipperMointorTest extends TestCase {
 		b.Type="non-terminal";
 		assertTrue(monitor.isExpandable(b, null));
 	}
+*/
 	/**
 	 * Checks if IsExpandable can handle a valid object
 	 */
@@ -325,11 +325,20 @@ public class JFCRipperMointorTest extends TestCase {
 				return Type;
 		}
 	}
-	/*public class MyEventQueue extends EventQueue {
+	
+	public void CoverageEventDipatch() {
+		OneWindow onewin = new OneWindow();
+		MyEventQueue e = new MyEventQueue();
+		WindowEvent w1= new WindowEvent(onewin,WindowEvent.WINDOW_OPENED);
+
+		e.dispatchEvent(w1);
+	}
+	
+	public class MyEventQueue extends EventQueue {
 		  protected void dispatchEvent(AWTEvent event) {
 		    // the only functionality I add is that I print out all the events
 		    //System.out.println(event);
 		    super.dispatchEvent(event);
 		  }
-		}*/
+		}
 }

@@ -53,4 +53,14 @@ public class JFCIgnoreExpandFilterTest extends TestCase {
 		ComponentTypeStub a= (ComponentTypeStub) test.ripComponent(component,window);
 		assertEquals(null,a);
 	}
+	
+	public void CoverageIsProcessGComponentGWindow() {
+		List<String> sIgnoreWidgetList2 = new ArrayList<String>();
+		sIgnoreWidgetList2.add("Name");
+		JFCIgnoreExpandFilter test=new JFCIgnoreExpandFilter(sIgnoreWidgetList);
+		JFCIgnoreExpandFilter test2=new JFCIgnoreExpandFilter(sIgnoreWidgetList2);
+		assertFalse(test.isProcess(component, window));
+		assertTrue(test2.isProcess(component, window));
+		
+	}
 }
