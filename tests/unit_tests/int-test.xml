@@ -122,7 +122,7 @@
   <target name="execute" depends="jar,instrument" description="Execute the Unit Tests">
     <mkdir dir="${report.dir}" />
 
-    <junit fork="yes" timeout="10000" dir="${basedir}">
+    <junit fork="yes" timeout="100000" dir="${basedir}">
 
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${coverage.dir}/cobertura.ser" />
 
@@ -137,6 +137,8 @@
       <classpath>
 	<pathelement location="${jar.dir}/${module}-unit-tests.jar" />
 	<pathelement location="${shared.lib.dir}/log4j-1.2.15.jar" />
+ 	<pathelement location="${shared.lib.dir}/jemmy.jar" />
+ 	<pathelement location="${shared.lib.dir}/args4j-2.0.10.jar" />
        <pathelement location="${guitar.lib.dir}/GUIRipper-Core.jar" />
        <pathelement location="${guitar.lib.dir}/GUIRipper-Plugin-JFC.jar" />
        <pathelement location="${guitar.lib.dir}/GUITARModel-Core.jar" />
@@ -151,7 +153,7 @@
 
       <batchtest todir="${report.dir}" >
 	<fileset dir="${test.dir}">
-	  <include name="**/*.java" />
+	  <include name="**/*Test.java" />
 	</fileset>
       </batchtest>
     </junit>
