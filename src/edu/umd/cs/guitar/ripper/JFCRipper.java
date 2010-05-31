@@ -84,15 +84,16 @@ public class JFCRipper {
 		if (CONFIG.help) {
 			throw new CmdLineException("");
 		}
-		System.setProperty("file.name", JFCRipperConfiguration.LOG_FILE);
+		System.setProperty(GUITARLog.LOGFILE_NAME_SYSTEM_PROPERTY, JFCRipperConfiguration.LOG_FILE);
 		// PropertyConfigurator.configure(JFCConstants.LOG4J_PROPERTIES_FILE);
-		URL logFile = this.getClass().getClassLoader().getResource(
-				JFCConstants.LOG4J_PROPERTIES_FILE);
-		PropertyConfigurator.configure(logFile);
+		// URL logFile = this.getClass().getClassLoader().getResource(
+		// JFCConstants.LOG4J_PROPERTIES_FILE);
+		// PropertyConfigurator.configure(logFile);
 
 		// org.apache.log4j.helpers.Loader.getResource(resource, Logger.class)
 
-		GUITARLog.log = Logger.getLogger(JFCRipperMain.class.getSimpleName());
+		// GUITARLog.log =
+		// Logger.getLogger(JFCRipperMain.class.getSimpleName());
 		long nStartTime = System.currentTimeMillis();
 		ripper = new Ripper(GUITARLog.log);
 
@@ -115,7 +116,8 @@ public class JFCRipper {
 		GUITARLog.log.info("Number of Windows: "
 				+ dGUIStructure.getGUI().size());
 		GUITARLog.log.info("GUI file:" + JFCRipperConfiguration.GUI_FILE);
-		GUITARLog.log.info("Open Component file:" + JFCRipperConfiguration.LOG_WIDGET_FILE);
+		GUITARLog.log.info("Open Component file:"
+				+ JFCRipperConfiguration.LOG_WIDGET_FILE);
 		ComponentListType lOpenWins = ripper.getlOpenWindowComps();
 		ComponentListType lCloseWins = ripper.getlCloseWindowComp();
 		ObjectFactory factory = new ObjectFactory();
@@ -160,7 +162,7 @@ public class JFCRipper {
 		} catch (Exception e) {
 			GUITARLog.log.error("No configuration file ");
 		}
-		
+
 		List<FullComponentType> cTerminalList = conf.getTerminalComponents()
 				.getFullComponent();
 
