@@ -45,7 +45,7 @@ public class JFCRipperConfiguration extends GRipperConfiguration {
     static public String LOG_WIDGET_FILE = "log_widget.xml";
 
     @Option(name = "-i", usage = "initial waiting time for the application to get stablized before being ripped", aliases = "--initial-wait")
-    static public Integer INITIAL_WAITING_TIME = 0;
+    static public Integer INITIAL_WAITING_TIME = 500;
 
     // @Option(name = "-iw", usage =
     // "file  containing a list of windows should be ignored during ripping ",

@@ -32,6 +32,7 @@ import edu.umd.cs.guitar.model.data.ComponentType;
 import edu.umd.cs.guitar.model.data.ContainerType;
 import edu.umd.cs.guitar.model.wrapper.ComponentTypeWrapper;
 import edu.umd.cs.guitar.ripper.GComponentFilter;
+import edu.umd.cs.guitar.util.GUITARLog;
 
 /**
  * @author <a href="mailto:baonn@cs.umd.edu"> Bao Nguyen </a>
@@ -60,8 +61,10 @@ public class JFCTabFilter extends GComponentFilter {
 	 */
 	@Override
 	public boolean isProcess(GComponent component, GWindow window) {
+		
 		JFCXComponent jComponent = (JFCXComponent) component;
-		return (jComponent.getAComponent() instanceof JTabbedPane);
+		boolean isProcess = (jComponent.getComponent() instanceof JTabbedPane);
+		return isProcess ;
 	}
 
 	/*
@@ -92,7 +95,7 @@ public class JFCTabFilter extends GComponentFilter {
 		// eSelection.
 		// }
 
-		JTabbedPane jTab = (JTabbedPane) jComponent.getAComponent();
+		JTabbedPane jTab = (JTabbedPane) jComponent.getComponent();
 
 		// Debug
 		// debbug(jTab);

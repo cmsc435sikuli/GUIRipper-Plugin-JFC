@@ -20,6 +20,7 @@
 package edu.umd.cs.guitar.ripper;
 
 import java.awt.AWTEvent;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -37,6 +38,7 @@ import javax.accessibility.AccessibleSelection;
 import javax.accessibility.AccessibleText;
 
 import org.apache.log4j.Logger;
+import org.netbeans.jemmy.EventTool;
 import org.netbeans.jemmy.QueueTool;
 
 import edu.umd.cs.guitar.event.GEvent;
@@ -186,11 +188,15 @@ public class JFCRipperMointor extends GRipperMonitor {
 		GUITARLog.log.info("Waiting  " + configuration.DELAY
 				+ "ms for a new window to open");
 
-		new QueueTool().waitEmpty(configuration.DELAY);
-		// try {
-		// Thread.sleep(configuration.DELAY);
-		// } catch (InterruptedException e) {
-		// }
+		
+		//new QueueTool().waitEmpty(configuration.DELAY);
+		new EventTool().waitNoEvent(configuration.DELAY);
+
+//		 try {
+//			 Thread.sleep(configuration.DELAY);
+//		 } catch (InterruptedException e) {
+//		 }
+			GUITARLog.log.debug("Done waiting");
 	}
 
 	/*
@@ -308,41 +314,45 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 * .model.GXComponent, edu.umd.cs.guitar.model.GXWindow)
 	 */
 	@Override
-	boolean isExpandable(GComponent component, GWindow window) {
+	boolean isExpandable(GComponent gComponent, GWindow window) {
 
-		JFCXComponent jComponent = (JFCXComponent) component;
-		Accessible aComponent = jComponent.getAComponent();
+		JFCXComponent jComponent = (JFCXComponent) gComponent;
+//		Accessible aComponent = jComponent.getAComponent();
+//
+//		if (aComponent == null)
+//			return false;
+		
+		Component component = jComponent.getComponent();
+		AccessibleContext aContext = component .getAccessibleContext();
+		
 
-		if (aComponent == null)
-			return false;
-
-		String ID = component.getTitle();
+		String ID = gComponent.getTitle();
 		if (ID == null)
 			return false;
 
 		if ("".equals(ID))
 			return false;
 
-		if (!component.isEnable()) {
+		if (!gComponent.isEnable()) {
 			GUITARLog.log.debug("Component is disabled");
 			return false;
 		}
 
-		if (!isClickable(aComponent)) {
+		if (!isClickable(component)) {
 			return false;
 		}
 
-		if (component.getTypeVal().equals(GUITARConstants.TERMINAL))
+		if (gComponent.getTypeVal().equals(GUITARConstants.TERMINAL))
 			return false;
 
-		// Check for more details
-		AccessibleContext aContext = aComponent.getAccessibleContext();
+		// // Check for more details
+		// AccessibleContext aContext = component.getAccessibleContext();
 
 		if (aContext == null)
 			return false;
 
 		AccessibleText aText = aContext.getAccessibleText();
-		AccessibleSelection aSelect = aContext.getAccessibleSelection();
+
 		if (aText != null)
 			return false;
 
@@ -355,7 +365,7 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 * @param component
 	 * @return true/false
 	 */
-	private boolean isClickable(Accessible component) {
+	private boolean isClickable(Component component) {
 
 		AccessibleContext aContext = component.getAccessibleContext();
 

@@ -45,6 +45,7 @@ import edu.umd.cs.guitar.model.data.LogWidget;
 import edu.umd.cs.guitar.model.data.ObjectFactory;
 import edu.umd.cs.guitar.model.wrapper.AttributesTypeWrapper;
 import edu.umd.cs.guitar.model.wrapper.ComponentTypeWrapper;
+import edu.umd.cs.guitar.util.DefaultFactory;
 import edu.umd.cs.guitar.util.GUITARLog;
 
 /**
@@ -84,7 +85,8 @@ public class JFCRipper {
 		if (CONFIG.help) {
 			throw new CmdLineException("");
 		}
-		System.setProperty(GUITARLog.LOGFILE_NAME_SYSTEM_PROPERTY, JFCRipperConfiguration.LOG_FILE);
+		System.setProperty(GUITARLog.LOGFILE_NAME_SYSTEM_PROPERTY,
+				JFCRipperConfiguration.LOG_FILE);
 		// PropertyConfigurator.configure(JFCConstants.LOG4J_PROPERTIES_FILE);
 		// URL logFile = this.getClass().getClassLoader().getResource(
 		// JFCConstants.LOG4J_PROPERTIES_FILE);
@@ -106,6 +108,7 @@ public class JFCRipper {
 			ripper.execute();
 		} catch (Exception e) {
 			GUITARLog.log.error("JFCRipper: ", e);
+			System.exit(1);
 		}
 
 		GUIStructure dGUIStructure = ripper.getResult();
@@ -147,7 +150,9 @@ public class JFCRipper {
 
 		// Try to find absolute path first then relative path
 
+		
 		Configuration conf = null;
+
 		try {
 			conf = (Configuration) IO.readObjFromFile(
 					JFCRipperConfiguration.CONFIG_FILE, Configuration.class);
@@ -159,8 +164,15 @@ public class JFCRipper {
 				conf = (Configuration) IO.readObjFromFile(in,
 						Configuration.class);
 			}
+
 		} catch (Exception e) {
-			GUITARLog.log.error("No configuration file ");
+			GUITARLog.log.error("No configuration file. Using an empty one...");
+			// return;
+		}
+
+		if (conf == null) {
+			DefaultFactory df = new DefaultFactory();
+			conf = df.createDefaultConfiguration();
 		}
 
 		List<FullComponentType> cTerminalList = conf.getTerminalComponents()
@@ -206,19 +218,6 @@ public class JFCRipper {
 				lIgnoredComps);
 		ripper.addComponentFilter(jIgnoreExpand);
 
-		// --------------------------
-		// Ignore components
-		// List<String> sIgnoreWidgetList = Util.getListFromFile(
-		// CONFIG.IGNORE_COMPONENT_FILE, false);
-
-		// GComponentFilter jIgnoreExpand = new JFCIgnoreSignExpandFilter(conf
-		// .getIgnoredComponents());
-		// ripper.addComponentFilter(jIgnoreExpand);
-
-		// // Setup terminal components ripper
-		// GComponentFilter jTermial = JFCTerminalFilter.getInstance();
-		// ripper.addComponentFilter(jTermial);
-
 		// Setup tab components ripper
 		GComponentFilter jTab = JFCTabFilter.getInstance();
 		ripper.addComponentFilter(jTab);
@@ -226,4 +225,6 @@ public class JFCRipper {
 		ripper.setMonitor(jMonitor);
 
 	}
+
+
 }
