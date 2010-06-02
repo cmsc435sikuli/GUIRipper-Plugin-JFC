@@ -181,8 +181,8 @@ public class JFCRipperMointor extends GRipperMonitor {
 
 		GUITARLog.log.info("Expanding *" + component.getTitle() + "*...");
 
-//		GThreadEvent action = new JFCActionHandler();
-		 GEvent action = new JFCActionHandlerNoThread();
+		GThreadEvent action = new JFCActionHandler();
+//		 GEvent action = new JFCActionHandlerNoThread();
 
 		action.perform(component);
 		GUITARLog.log.info("Waiting  " + configuration.DELAY
