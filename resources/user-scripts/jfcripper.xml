@@ -103,7 +103,7 @@
 			<arg value="${ripper.delay}" />
 
 			<arg value="-g" />
-			<arg value="${basedir}/${ripper.gui-file}" />
+			<arg value="${ripper.gui-file}" />
 
 			<arg value="-l" />
 			<arg value="${ripper.log-file}" />
