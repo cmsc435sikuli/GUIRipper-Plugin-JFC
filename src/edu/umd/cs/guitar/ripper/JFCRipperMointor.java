@@ -44,7 +44,7 @@ import org.netbeans.jemmy.QueueTool;
 import edu.umd.cs.guitar.event.GEvent;
 import edu.umd.cs.guitar.event.GThreadEvent;
 import edu.umd.cs.guitar.event.JFCActionHandler;
-import edu.umd.cs.guitar.event.JFCActionHandlerNoThread;
+import edu.umd.cs.guitar.event.JFCActionEDT;
 import edu.umd.cs.guitar.exception.ApplicationConnectException;
 import edu.umd.cs.guitar.model.GApplication;
 import edu.umd.cs.guitar.model.GComponent;
@@ -181,8 +181,8 @@ public class JFCRipperMointor extends GRipperMonitor {
 
 		GUITARLog.log.info("Expanding *" + component.getTitle() + "*...");
 
-		GThreadEvent action = new JFCActionHandler();
-//		 GEvent action = new JFCActionHandlerNoThread();
+//		GThreadEvent action = new JFCActionHandler();
+		 GEvent action = new JFCActionEDT();
 
 		action.perform(component);
 		GUITARLog.log.info("Waiting  " + configuration.DELAY
