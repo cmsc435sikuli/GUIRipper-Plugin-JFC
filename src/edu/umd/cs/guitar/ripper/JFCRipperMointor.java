@@ -187,7 +187,6 @@ public class JFCRipperMointor extends GRipperMonitor {
 		action.perform(component);
 		GUITARLog.log.info("Waiting  " + configuration.DELAY
 				+ "ms for a new window to open");
-
 		
 		//new QueueTool().waitEmpty(configuration.DELAY);
 		new EventTool().waitNoEvent(configuration.DELAY);
@@ -196,7 +195,6 @@ public class JFCRipperMointor extends GRipperMonitor {
 //			 Thread.sleep(configuration.DELAY);
 //		 } catch (InterruptedException e) {
 //		 }
-			GUITARLog.log.debug("Done waiting");
 	}
 
 	/*
