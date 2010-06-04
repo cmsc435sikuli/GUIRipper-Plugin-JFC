@@ -41,10 +41,16 @@ import org.apache.log4j.Logger;
 import org.netbeans.jemmy.EventTool;
 import org.netbeans.jemmy.QueueTool;
 
+import edu.umd.cs.guitar.event.EventManager;
 import edu.umd.cs.guitar.event.GEvent;
 import edu.umd.cs.guitar.event.GThreadEvent;
 import edu.umd.cs.guitar.event.JFCActionHandler;
 import edu.umd.cs.guitar.event.JFCActionEDT;
+import edu.umd.cs.guitar.event.JFCEditableTextHandler;
+import edu.umd.cs.guitar.event.JFCEventHandler;
+import edu.umd.cs.guitar.event.JFCSelectFromParent;
+import edu.umd.cs.guitar.event.JFCSelectionHandler;
+import edu.umd.cs.guitar.event.JFCValueHandler;
 import edu.umd.cs.guitar.exception.ApplicationConnectException;
 import edu.umd.cs.guitar.model.GApplication;
 import edu.umd.cs.guitar.model.GComponent;
@@ -467,6 +473,22 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 */
 	@Override
 	public void setUp() {
+		
+		// Registering events supported 
+		
+		EventManager em = EventManager.getInstance();
+		
+		for(Class<? extends JFCEventHandler> event: JFCConstants.SUPPORTED_EVENTS){
+			
+			em.registerEvent(event);
+		}
+		
+//		em.registerEvent(JFCActionHandler.class);
+//		em.registerEvent(JFCEditableTextHandler.class);
+//		em.registerEvent(JFCSelectFromParent.class);
+//		em.registerEvent(JFCValueHandler.class);
+//		em.registerEvent(JFCSelectionHandler.class);
+////		
 		// Set up parameters
 		sIgnoreWindowList = JFCConstants.sIgnoredWins;
 
