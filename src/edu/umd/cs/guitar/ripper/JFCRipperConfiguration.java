@@ -64,7 +64,7 @@ public class JFCRipperConfiguration extends GRipperConfiguration {
     @Option(name = "-a", usage = "arguments for the Application Under Test, separated by a colon (:) ", aliases = "--arguments")
     static public String ARGUMENT_LIST;
 
-    @Option(name = "-u", usage = "URLs for the Application Under Test, separated by ';' ", aliases = "--urls")
+    @Option(name = "-u", usage = "URLs for the Application Under Test, separated by a colon (:) ", aliases = "--urls")
     static public String URL_LIST;
 
     @Option(name = "-j", usage = "Java Virtual Machine options for the Application Under Test", aliases = "--jvm-options")
@@ -75,6 +75,6 @@ public class JFCRipperConfiguration extends GRipperConfiguration {
            // + File.separator + 
             "configuration.xml";
     
-    @Option(name = "-ce", usage = "Customized event list", aliases = "--event-list")
+    @Option(name = "-ce", usage = "Customized event list (usually aut-specific events)", aliases = "--event-list")
     public static String CUSTOMIZED_EVENT_LIST = null;
 }
