@@ -187,20 +187,20 @@ public class JFCRipperMointor extends GRipperMonitor {
 
 		GUITARLog.log.info("Expanding *" + component.getTitle() + "*...");
 
-//		GThreadEvent action = new JFCActionHandler();
-		 GEvent action = new JFCActionEDT();
+		// GThreadEvent action = new JFCActionHandler();
+		GEvent action = new JFCActionEDT();
 
 		action.perform(component);
 		GUITARLog.log.info("Waiting  " + configuration.DELAY
 				+ "ms for a new window to open");
-		
-		//new QueueTool().waitEmpty(configuration.DELAY);
+
+		// new QueueTool().waitEmpty(configuration.DELAY);
 		new EventTool().waitNoEvent(configuration.DELAY);
 
-//		 try {
-//			 Thread.sleep(configuration.DELAY);
-//		 } catch (InterruptedException e) {
-//		 }
+		// try {
+		// Thread.sleep(configuration.DELAY);
+		// } catch (InterruptedException e) {
+		// }
 	}
 
 	/*
@@ -321,14 +321,13 @@ public class JFCRipperMointor extends GRipperMonitor {
 	boolean isExpandable(GComponent gComponent, GWindow window) {
 
 		JFCXComponent jComponent = (JFCXComponent) gComponent;
-//		Accessible aComponent = jComponent.getAComponent();
-//
-//		if (aComponent == null)
-//			return false;
-		
+		// Accessible aComponent = jComponent.getAComponent();
+		//
+		// if (aComponent == null)
+		// return false;
+
 		Component component = jComponent.getComponent();
-		AccessibleContext aContext = component .getAccessibleContext();
-		
+		AccessibleContext aContext = component.getAccessibleContext();
 
 		String ID = gComponent.getTitle();
 		if (ID == null)
@@ -473,22 +472,36 @@ public class JFCRipperMointor extends GRipperMonitor {
 	 */
 	@Override
 	public void setUp() {
-		
-		// Registering events supported 
-		
+
+		// Registering default supported events 
+
 		EventManager em = EventManager.getInstance();
-		
-		for(Class<? extends JFCEventHandler> event: JFCConstants.SUPPORTED_EVENTS){
-			
+
+		for (Class<? extends JFCEventHandler> event : JFCConstants.DEFAULT_SUPPORTED_EVENTS) {
 			em.registerEvent(event);
 		}
+
+		// Registering customized supported event 
+		Class<? extends GEvent> gCustomizedEvents;
+
+		String[] sCustomizedEventList;
+		if (JFCRipperConfiguration.CUSTOMIZED_EVENT_LIST != null)
+			sCustomizedEventList = JFCRipperConfiguration.CUSTOMIZED_EVENT_LIST
+					.split(GUITARConstants.CMD_ARGUMENT_SEPARATOR);
+		else
+			sCustomizedEventList = new String[0];
 		
-//		em.registerEvent(JFCActionHandler.class);
-//		em.registerEvent(JFCEditableTextHandler.class);
-//		em.registerEvent(JFCSelectFromParent.class);
-//		em.registerEvent(JFCValueHandler.class);
-//		em.registerEvent(JFCSelectionHandler.class);
-////		
+		for(String sEvent:sCustomizedEventList){
+			try {
+				Class<? extends GEvent> cEvent = (Class<? extends GEvent>) Class.forName(sEvent);
+				em.registerEvent(cEvent);
+			} catch (ClassNotFoundException e) {
+				GUITARLog.log.error(e);
+			}
+			
+		}
+		
+		
 		// Set up parameters
 		sIgnoreWindowList = JFCConstants.sIgnoredWins;
 
@@ -505,6 +518,7 @@ public class JFCRipperMointor extends GRipperMonitor {
 			application = new JFCApplication(JFCRipperConfiguration.MAIN_CLASS,
 					URLs);
 
+			// Parsing arguments
 			String[] args;
 			if (JFCRipperConfiguration.ARGUMENT_LIST != null)
 				args = JFCRipperConfiguration.ARGUMENT_LIST
