@@ -17,7 +17,7 @@
  *	IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
  *	THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-package edu.umd.cs.guitar.ripper;
+package edu.umd.cs.guitar.ripper.filter;
 
 import java.awt.Component;
 import javax.accessibility.Accessible;
@@ -31,7 +31,6 @@ import edu.umd.cs.guitar.model.JFCXComponent;
 import edu.umd.cs.guitar.model.data.ComponentType;
 import edu.umd.cs.guitar.model.data.ContainerType;
 import edu.umd.cs.guitar.model.wrapper.ComponentTypeWrapper;
-import edu.umd.cs.guitar.ripper.GComponentFilter;
 import edu.umd.cs.guitar.util.GUITARLog;
 
 /**
@@ -61,10 +60,13 @@ public class JFCTabFilter extends GComponentFilter {
 	 */
 	@Override
 	public boolean isProcess(GComponent component, GWindow window) {
-		
+
+		if (!(component instanceof JFCXComponent))
+			return false;
+
 		JFCXComponent jComponent = (JFCXComponent) component;
 		boolean isProcess = (jComponent.getComponent() instanceof JTabbedPane);
-		return isProcess ;
+		return isProcess;
 	}
 
 	/*
@@ -105,7 +107,7 @@ public class JFCTabFilter extends GComponentFilter {
 		for (int i = 0; i < nChild; i++) {
 
 			Component child = jTab.getComponent(i);
-//			GComponent gChild = new JFCXComponent((Accessible) child);
+			// GComponent gChild = new JFCXComponent((Accessible) child);
 			GComponent gChild = new JFCXComponent(child);
 			// Select tab
 			// Debugger.pause("About to select");

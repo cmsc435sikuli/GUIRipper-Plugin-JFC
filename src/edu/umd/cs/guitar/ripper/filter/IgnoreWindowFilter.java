@@ -1,10 +1,11 @@
 /**
  * 
  */
-package edu.umd.cs.guitar.ripper;
+package edu.umd.cs.guitar.ripper.filter;
 
 import edu.umd.cs.guitar.model.GWindow;
 import edu.umd.cs.guitar.model.data.GUIType;
+import edu.umd.cs.guitar.ripper.GWindowFilter;
 
 /**
  * @author Bao Nguyen

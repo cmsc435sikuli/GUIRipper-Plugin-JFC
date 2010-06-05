@@ -17,54 +17,66 @@
  *	IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
  *	THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-package edu.umd.cs.guitar.ripper;
+package edu.umd.cs.guitar.ripper.filter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.umd.cs.guitar.model.GComponent;
-import edu.umd.cs.guitar.model.GUITARConstants;
 import edu.umd.cs.guitar.model.GWindow;
 import edu.umd.cs.guitar.model.data.ComponentType;
-import edu.umd.cs.guitar.ripper.GComponentFilter;
 
 /**
+ * 
+ * A ripper filter to avoid expanding (clicking) on a component 
+ * and still record its GUI information. This filter is used  to
+ * avoid wasting time clicking on items which don't change the GUI  
+ * For example, text fields or items in a drop down list.   
+ * 
+ * 
+ * @see GComponentFilter
+ * 
+ * <p>
+ * 
  * @author <a href="mailto:baonn@cs.umd.edu"> Bao Nguyen </a>
  * 
  */
-public class JFCTerminalFilter extends GComponentFilter {
+public class JFCIgnoreExpandFilter extends GComponentFilter {
 
-	static GComponentFilter cmIgnoreMonitor = null;
+    List<String> sIgnoreWidgetList = new ArrayList<String>();
 
-	public synchronized static GComponentFilter getInstance() {
-		if (cmIgnoreMonitor == null) {
-			cmIgnoreMonitor = new JFCTerminalFilter();
-		}
-		return cmIgnoreMonitor;
-	}
+    /**
+     * @param sIgnoreWidgetList
+     */
+    public JFCIgnoreExpandFilter(List<String> sIgnoreWidgetList) {
+        super();
+        this.sIgnoreWidgetList = sIgnoreWidgetList;
+    }
 
-	private JFCTerminalFilter() {
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.umd.cs.guitar.ripper.ComponentFilter#isProcess(edu.umd.cs.guitar.
+     * model.GXComponent)
+     */
+    @Override
+    public boolean isProcess(GComponent gComponent, GWindow gWindow) {
+        String sComponentID = gComponent.getTitle();
+        if (this.sIgnoreWidgetList.contains(sComponentID))
+            return true;
+        return false;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.umd.cs.guitar.ripper.ComponentFilter#isProcess(edu.umd.cs.guitar.model.GXComponent)
-	 */
-	@Override
-	public boolean isProcess(GComponent gComponent, GWindow window) {
-	    
-	    if(GUITARConstants.TERMINAL.equals(gComponent.getTypeVal())){
-	        return true;
-	    }
-		return false;
-		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see edu.umd.cs.guitar.ripper.ComponentMonitor#ripComponent(edu.umd.cs.guitar.model.GXComponent)
-	 */
-	@Override
-	public ComponentType ripComponent(GComponent component, GWindow window) {
-		return component.extractProperties();
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.umd.cs.guitar.ripper.ComponentMonitor#ripComponent(edu.umd.cs.guitar
+     * .model.GXComponent)
+     */
+    @Override
+    public ComponentType ripComponent(GComponent component, GWindow window) {
+        return component.extractProperties();
+    }
 }

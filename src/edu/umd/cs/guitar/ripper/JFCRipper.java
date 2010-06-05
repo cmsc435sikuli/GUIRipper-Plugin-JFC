@@ -45,6 +45,10 @@ import edu.umd.cs.guitar.model.data.LogWidget;
 import edu.umd.cs.guitar.model.data.ObjectFactory;
 import edu.umd.cs.guitar.model.wrapper.AttributesTypeWrapper;
 import edu.umd.cs.guitar.model.wrapper.ComponentTypeWrapper;
+import edu.umd.cs.guitar.ripper.filter.GComponentFilter;
+import edu.umd.cs.guitar.ripper.filter.JFCIgnoreSignExpandFilter;
+import edu.umd.cs.guitar.ripper.filter.JFCTabFilter;
+import edu.umd.cs.guitar.ripper.filter.JFCTreeFilter;
 import edu.umd.cs.guitar.util.DefaultFactory;
 import edu.umd.cs.guitar.util.GUITARLog;
 
@@ -150,7 +154,6 @@ public class JFCRipper {
 
 		// Try to find absolute path first then relative path
 
-		
 		Configuration conf = null;
 
 		try {
@@ -218,13 +221,16 @@ public class JFCRipper {
 				lIgnoredComps);
 		ripper.addComponentFilter(jIgnoreExpand);
 
-		// Setup tab components ripper
+		// Setup tab components ripper filter
 		GComponentFilter jTab = JFCTabFilter.getInstance();
 		ripper.addComponentFilter(jTab);
+
+		// Setup Tree Components ripper filter
+		GComponentFilter jTree = JFCTreeFilter.getInstance();
+		ripper.addComponentFilter(jTree);
 
 		ripper.setMonitor(jMonitor);
 
 	}
-
 
 }

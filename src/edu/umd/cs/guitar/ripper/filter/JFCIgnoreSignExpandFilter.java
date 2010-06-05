@@ -17,41 +17,37 @@
  *	IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR 
  *	THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-package edu.umd.cs.guitar.ripper;
+package edu.umd.cs.guitar.ripper.filter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.umd.cs.guitar.model.GComponent;
 import edu.umd.cs.guitar.model.GWindow;
+import edu.umd.cs.guitar.model.data.ComponentListType;
 import edu.umd.cs.guitar.model.data.ComponentType;
-import edu.umd.cs.guitar.ripper.GComponentFilter;
+import edu.umd.cs.guitar.model.data.FullComponentType;
+import edu.umd.cs.guitar.model.wrapper.AttributesTypeWrapper;
 
 /**
  * 
- * A ripper filter to avoid expanding (clicking) on a component 
- * and still record its GUI information. This filter is used  to
- * avoid wasting time clicking on items which don't change the GUI  
- * For example, text fields or items in a drop down list.   
- * 
- * 
- * @see GComponentFilter
+ * Ignore component while ripping by a subset of its attributes
  * 
  * <p>
  * 
  * @author <a href="mailto:baonn@cs.umd.edu"> Bao Nguyen </a>
  * 
  */
-public class JFCIgnoreExpandFilter extends GComponentFilter {
+public class JFCIgnoreSignExpandFilter extends GComponentFilter {
 
-    List<String> sIgnoreWidgetList = new ArrayList<String>();
+    List<FullComponentType> lIgnoreFullComponent;
+    ComponentListType sIgnoreWidgetSignList;
 
     /**
-     * @param sIgnoreWidgetList
+     * @param sIgnoreWidgetSignList
      */
-    public JFCIgnoreExpandFilter(List<String> sIgnoreWidgetList) {
+    public JFCIgnoreSignExpandFilter(List<FullComponentType> lIgnoredComps) {
         super();
-        this.sIgnoreWidgetList = sIgnoreWidgetList;
+        this.lIgnoreFullComponent = lIgnoredComps;
     }
 
     /*
@@ -63,9 +59,41 @@ public class JFCIgnoreExpandFilter extends GComponentFilter {
      */
     @Override
     public boolean isProcess(GComponent gComponent, GWindow gWindow) {
-        String sComponentID = gComponent.getTitle();
-        if (this.sIgnoreWidgetList.contains(sComponentID))
-            return true;
+
+        // GUITARLog.log.debug("Start: " + this.getClass().getName());
+
+        ComponentType dComponent = gComponent.extractProperties();
+        ComponentType dWindow = gWindow.extractWindow().getWindow();
+
+        AttributesTypeWrapper compAttributesAdapter = new AttributesTypeWrapper(
+                dComponent.getAttributes());
+        AttributesTypeWrapper winAttributesAdapter = new AttributesTypeWrapper(
+                dWindow.getAttributes());
+
+        ComponentType signComp;
+        ComponentType signWin;
+
+        for (FullComponentType sign : lIgnoreFullComponent) {
+            signComp = sign.getComponent();
+            signWin = sign.getWindow();
+
+            AttributesTypeWrapper dCompSignAttributes = new AttributesTypeWrapper(
+                    signComp.getAttributes());
+
+            if (signWin != null) {
+                AttributesTypeWrapper signWinAttributes = new AttributesTypeWrapper(
+                        signWin.getAttributes());
+
+                if (!winAttributesAdapter.containsAll(signWinAttributes)) {
+                    continue;
+                }
+            }
+
+            if (compAttributesAdapter.containsAll(dCompSignAttributes))
+                return true;
+        }
+
+        // GUITARLog.log.debug("End: " + this.getClass().getName());
         return false;
     }
 
