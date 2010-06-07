@@ -119,7 +119,10 @@ public class JFCTreeFilter extends GComponentFilter {
 			DefaultMutableTreeNode nChild = (DefaultMutableTreeNode) e
 					.nextElement();
 
-			ComponentType cChild = gGomponent.extractProperties();
+			GComponent gChild = new JFCXComponent(jComponent.getComponent());
+			
+			ComponentType cChild = gChild .extractProperties();
+			
 			AttributesType at = factory.createAttributesType();
 
 			PropertyType property;
