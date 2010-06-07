@@ -21,9 +21,11 @@ package edu.umd.cs.guitar.ripper.filter;
 
 import java.awt.Component;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JTree;
+import javax.swing.text.Position;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
@@ -31,11 +33,17 @@ import javax.swing.tree.TreePath;
 
 import org.netbeans.jemmy.drivers.trees.JTreeMouseDriver;
 
+import edu.umd.cs.guitar.event.JFCSelectTreeNode;
 import edu.umd.cs.guitar.model.GComponent;
+import edu.umd.cs.guitar.model.GUITARConstants;
 import edu.umd.cs.guitar.model.GWindow;
+import edu.umd.cs.guitar.model.JFCConstants;
 import edu.umd.cs.guitar.model.JFCXComponent;
+import edu.umd.cs.guitar.model.data.AttributesType;
 import edu.umd.cs.guitar.model.data.ComponentType;
 import edu.umd.cs.guitar.model.data.ContainerType;
+import edu.umd.cs.guitar.model.data.ObjectFactory;
+import edu.umd.cs.guitar.model.data.PropertyType;
 import edu.umd.cs.guitar.model.wrapper.ComponentTypeWrapper;
 import edu.umd.cs.guitar.util.Debugger;
 import edu.umd.cs.guitar.util.GUITARLog;
@@ -47,6 +55,7 @@ import edu.umd.cs.guitar.util.GUITARLog;
 public class JFCTreeFilter extends GComponentFilter {
 
 	static GComponentFilter cmIgnoreMonitor = null;
+	static ObjectFactory factory = new ObjectFactory();
 
 	public synchronized static GComponentFilter getInstance() {
 		if (cmIgnoreMonitor == null) {
@@ -91,31 +100,54 @@ public class JFCTreeFilter extends GComponentFilter {
 
 		ComponentType retComp = gGomponent.extractProperties();
 		ComponentTypeWrapper wRetComp = new ComponentTypeWrapper(retComp);
+		wRetComp.removeProperty(GUITARConstants.EVENT_TAG_NAME);
 
 		JFCXComponent jComponent = (JFCXComponent) gGomponent;
 		Component component = jComponent.getComponent();
 		JTree tree = (JTree) component;
-
-		expandAll(tree, true);
-
 		TreeModel model = tree.getModel();
 
-		int nSuccessor = getNodeCount(model.getRoot());
+		Object root = model.getRoot();
 
-		for (int i = 0; i < nSuccessor; i++) {
+		if (!(root instanceof DefaultMutableTreeNode))
+			return retComp;
 
-			GComponent gChild = new JFCXComponent(jComponent.getComponent());
-			ComponentType cChild = gChild.extractProperties();
-			cChild.setOptional(Integer.toString(i));
+		DefaultMutableTreeNode nRoot = (DefaultMutableTreeNode) root;
+		expandAll(tree, true);
+
+		for (Enumeration e = nRoot.children(); e.hasMoreElements();) {
+			DefaultMutableTreeNode nChild = (DefaultMutableTreeNode) e
+					.nextElement();
+
+			ComponentType cChild = gGomponent.extractProperties();
+			AttributesType at = factory.createAttributesType();
+
+			PropertyType property;
+
+			property = factory.createPropertyType();
+			at.getProperty().add(property);
+			property.setName(JFCConstants.TITLE_TAG);
+			String sTitle = nChild.toString();
+			property.getValue().add(sTitle);
+
+			ComponentTypeWrapper wChild = new ComponentTypeWrapper(cChild);
+			
+			wChild.removeProperty(GUITARConstants.EVENT_TAG_NAME);
+			wChild.addValueByName(GUITARConstants.EVENT_TAG_NAME,
+					JFCSelectTreeNode.class.getName());
+			
+			cChild = wChild.getDComponentType();
+			cChild.setOptional(at);
 			((ContainerType) retComp).getContents().getWidgetOrContainer().add(
 					cChild);
-
 		}
-
-		// retComp.setOptional("Test");
 
 		return wRetComp.getDComponentType();
 	}
+
+	// private ComponentType getTreeProperties(){
+	//		
+	// }
 
 	/**
 	 * @param root
@@ -123,15 +155,15 @@ public class JFCTreeFilter extends GComponentFilter {
 	 */
 	private int getNodeCount(Object root) {
 
-//		GUITARLog.log.debug("Entering getNodeCount");
+		// GUITARLog.log.debug("Entering getNodeCount");
 		if (!(root instanceof DefaultMutableTreeNode))
 			return 0;
-		
-		DefaultMutableTreeNode nRoot = (DefaultMutableTreeNode) root;
-		int nChildren = nRoot.getChildCount() ;
 
-//		GUITARLog.log.debug("nRoot.getChildCount(): "+nChildren );
-		
+		DefaultMutableTreeNode nRoot = (DefaultMutableTreeNode) root;
+		int nChildren = nRoot.getChildCount();
+
+		// GUITARLog.log.debug("nRoot.getChildCount(): "+nChildren );
+
 		if (nChildren >= 0) {
 			for (Enumeration e = nRoot.children(); e.hasMoreElements();) {
 				DefaultMutableTreeNode nChild = (DefaultMutableTreeNode) e

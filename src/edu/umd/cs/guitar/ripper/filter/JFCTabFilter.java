@@ -112,7 +112,7 @@ public class JFCTabFilter extends GComponentFilter {
 			// Select tab
 			// Debugger.pause("About to select");
 			GEvent eTabSelect = new JFCSelectFromParent();
-			eTabSelect.perform(gChild);
+			eTabSelect.perform(gChild, null);
 			// jTab.setSelectedComponent(child);
 			// End Select tab
 
