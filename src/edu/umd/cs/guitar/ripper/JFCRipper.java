@@ -32,9 +32,11 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.kohsuke.args4j.CmdLineException;
 
+import edu.umd.cs.guitar.model.GHashcodeGenerator;
 import edu.umd.cs.guitar.model.GUITARConstants;
 import edu.umd.cs.guitar.model.IO;
 import edu.umd.cs.guitar.model.JFCConstants;
+import edu.umd.cs.guitar.model.JFCDefaultHashcodeGenerator;
 import edu.umd.cs.guitar.model.data.AttributesType;
 import edu.umd.cs.guitar.model.data.ComponentListType;
 import edu.umd.cs.guitar.model.data.ComponentType;
@@ -148,6 +150,9 @@ public class JFCRipper {
 	/**
      * 
      */
+	/**
+	 * 
+	 */
 	private void setupEnv() {
 		// --------------------------
 		// Terminal list
@@ -229,7 +234,14 @@ public class JFCRipper {
 		GComponentFilter jTree = JFCTreeFilter.getInstance();
 		ripper.addComponentFilter(jTree);
 
+		
+		// Set up Monitor
 		ripper.setMonitor(jMonitor);
+		
+		// Set up HashcodeGenerator
+		
+		GHashcodeGenerator jHashcodeGenerator = JFCDefaultHashcodeGenerator.getInstance();
+		ripper.setHashcodeGenerator(jHashcodeGenerator);
 
 	}
 
