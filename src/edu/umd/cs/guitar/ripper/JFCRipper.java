@@ -229,10 +229,10 @@ public class JFCRipper {
 		// Setup tab components ripper filter
 		GComponentFilter jTab = JFCTabFilter.getInstance();
 		ripper.addComponentFilter(jTab);
-
-		// Setup Tree Components ripper filter
-		GComponentFilter jTree = JFCTreeFilter.getInstance();
-		ripper.addComponentFilter(jTree);
+//
+//		// Setup Tree Components ripper filter
+//		GComponentFilter jTree = JFCTreeFilter.getInstance();
+//		ripper.addComponentFilter(jTree);
 
 		
 		// Set up Monitor
