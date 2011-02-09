@@ -479,11 +479,11 @@ public class JFCRipperMonitor extends GRipperMonitor {
 		try {
 			String[] URLs;
 			if (configuration.URL_LIST != null)
-				URLs = configuration.URL_LIST
-						.split(GUITARConstants.CMD_ARGUMENT_SEPARATOR);
+				URLs = configuration.URL_LIST.split(",");
 			else
 				URLs = new String[0];
 
+			System.out.println(configuration.URL_LIST);
 			application = new JFCApplication(configuration.MAIN_CLASS, URLs);
 
 			// Parsing arguments
