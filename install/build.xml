@@ -71,4 +71,11 @@
     </exec>
   </target>
 
+  <target name="instrument" depends="common.instrument">
+    <exec executable="python" dir="${root.dir}">
+      <arg value="-c" />
+      <arg value="from guitar import ui; ui('gripper-cache.txt').install('jfc', 'Java Foundation Classes plugin', 'edu.umd.cs.guitar.ripper.JFCPluginInfo', ['${log4j}', '${apache-cli}', '${jemmy}', 'jars/GUITARModel-Plugin-JFC.jar', 'jars/GUITARModel-Core.jar', 'jars/GUIRipper-Plugin-JFC.jar', 'jars/GUIRipper-Core.jar', '${cobertura}'], [('net.sourceforge.cobertura.datafile', 'cobertura.ser')])" />
+    </exec>
+  </target>
+
 </project>
