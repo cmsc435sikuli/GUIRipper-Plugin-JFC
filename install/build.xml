@@ -65,7 +65,7 @@
   <import file="../../shared/ant/default.xml" />
 
   <target name="build" depends="common.build">
-    <exec executable="python" dir="${root.dir}/launcher">
+    <exec executable="python" dir="${root.dir}">
       <arg value="-c" />
       <arg value="from guitar import ui; ui('gripper-cache.txt').install('jfc', 'Java Foundation Classes plugin', 'edu.umd.cs.guitar.ripper.JFCPluginInfo', ['${log4j}', '${apache-cli}', '${jemmy}', '${jar.dir}/GUITARModel-Plugin-JFC.jar', '${jar.dir}/GUITARModel-Core.jar', '${jar.dir}/GUIRipper-Plugin-JFC.jar', '${jar.dir}/GUIRipper-Core.jar'])" />
     </exec>
