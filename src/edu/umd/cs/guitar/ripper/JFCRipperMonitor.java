@@ -70,15 +70,12 @@ import edu.umd.cs.guitar.util.GUITARLog;
  * 
  * @author <a href="mailto:baonn@cs.umd.edu"> Bao Nguyen </a>
  */
-public class JFCRipperMointor extends GRipperMonitor {
+public class JFCRipperMonitor extends GRipperMonitor {
 
 	// --------------------------
 	// Configuartion Parameters
 	// --------------------------
 
-	/**
-     * 
-     */
 	private static final int INITIAL_DELAY = 1000;
 
 	// Logger logger;
@@ -89,41 +86,15 @@ public class JFCRipperMointor extends GRipperMonitor {
 	/**
 	 * Constructor
 	 * 
-	 * @param logger
-	 *            logger to keep track of output
-	 * @param sMainClass
-	 *            full name of the main class
-	 * 
-	 */
-	@Deprecated
-	public JFCRipperMointor(String sMainClass, Logger logger) {
-		super();
-		// this.logger = logger;
-		JFCRipperConfiguration.MAIN_CLASS = sMainClass;
-	}
-
-	/**
-	 * Constructor
-	 * 
 	 * <p>
 	 * 
 	 * @param configuration
 	 *            ripper configuration
 	 */
-	public JFCRipperMointor(JFCRipperConfiguration configuration) {
+	public JFCRipperMonitor(GRipperConfiguration configuration) {
 		super();
 		// this.logger = logger;
-		this.configuration = configuration;
-	}
-
-	/**
-	 * @param main_class
-	 */
-	@Deprecated
-	public JFCRipperMointor(String main_class) {
-		super();
-		JFCRipperConfiguration.MAIN_CLASS = main_class;
-		// this.logger = Logger.getLogger(this.getClass().getSimpleName());
+		this.configuration = (JFCRipperConfiguration) configuration;
 	}
 
 	List<String> sRootWindows = new ArrayList<String>();
@@ -136,8 +107,6 @@ public class JFCRipperMointor extends GRipperMonitor {
 	volatile LinkedList<Window> tempOpenedWinStack = new LinkedList<Window>();
 
 	volatile LinkedList<Window> tempClosedWinStack = new LinkedList<Window>();
-
-	// volatile LinkedList<GWindow> tempGWinStack = new LinkedList<GWindow>();
 
 	/*
 	 * (non-Javadoc)
@@ -485,8 +454,8 @@ public class JFCRipperMointor extends GRipperMonitor {
 		Class<? extends GEvent> gCustomizedEvents;
 
 		String[] sCustomizedEventList;
-		if (JFCRipperConfiguration.CUSTOMIZED_EVENT_LIST != null)
-			sCustomizedEventList = JFCRipperConfiguration.CUSTOMIZED_EVENT_LIST
+		if (configuration.CUSTOMIZED_EVENT_LIST != null)
+			sCustomizedEventList = configuration.CUSTOMIZED_EVENT_LIST
 					.split(GUITARConstants.CMD_ARGUMENT_SEPARATOR);
 		else
 			sCustomizedEventList = new String[0];
@@ -509,19 +478,18 @@ public class JFCRipperMointor extends GRipperMonitor {
 		GApplication application;
 		try {
 			String[] URLs;
-			if (JFCRipperConfiguration.URL_LIST != null)
-				URLs = JFCRipperConfiguration.URL_LIST
+			if (configuration.URL_LIST != null)
+				URLs = configuration.URL_LIST
 						.split(GUITARConstants.CMD_ARGUMENT_SEPARATOR);
 			else
 				URLs = new String[0];
 
-			application = new JFCApplication(JFCRipperConfiguration.MAIN_CLASS,
-					URLs);
+			application = new JFCApplication(configuration.MAIN_CLASS, URLs);
 
 			// Parsing arguments
 			String[] args;
-			if (JFCRipperConfiguration.ARGUMENT_LIST != null)
-				args = JFCRipperConfiguration.ARGUMENT_LIST
+			if (configuration.ARGUMENT_LIST != null)
+				args = configuration.ARGUMENT_LIST
 						.split(GUITARConstants.CMD_ARGUMENT_SEPARATOR);
 			else
 				args = new String[0];
@@ -532,9 +500,9 @@ public class JFCRipperMointor extends GRipperMonitor {
 			try {
 				GUITARLog.log
 						.info("Initial waiting: "
-								+ JFCRipperConfiguration.INITIAL_WAITING_TIME
+								+ configuration.INITIAL_WAITING_TIME
 								+ "ms...");
-				Thread.sleep(JFCRipperConfiguration.INITIAL_WAITING_TIME);
+				Thread.sleep(configuration.INITIAL_WAITING_TIME);
 			} catch (InterruptedException e) {
 				GUITARLog.log.error(e);
 			}
