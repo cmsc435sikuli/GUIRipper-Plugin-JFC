@@ -13,7 +13,7 @@ import org.apache.commons.cli.MissingOptionException;
 public class JFCRipperConfiguration extends GRipperConfiguration {
 
     public JFCRipperConfiguration() {
-        opts.addOption( "c", "main-class", true, "main class name for the application under test" );
+        opts.addOption( null, "main-class", true, "main class name for the application under test" );
         opts.addOption( "u", "urls", true, "urls for the application under test, separated by a colon (:)" );
         opts.addOption( "j", "jvm-options", true, "Java Virtual Machine options for the application under test" );
         opts.addOption( null, "event-list", true, "customized event list (usually aut-specific events)" );
