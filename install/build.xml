@@ -44,16 +44,16 @@
 
    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-<project name="GUIRipper-Plugin-JFC" basedir=".." default="help">
+<project name="GUIRipper-Plugin-Sikuli" basedir=".." default="help">
 
-  <property name="module" value="GUIRipper-Plugin-JFC" />
+  <property name="module" value="GUIRipper-Plugin-Sikuli" />
   <import file="../../shared/ant/properties.xml" />
 
   <property name="dependency_list"
-            value="GUITARModel-Plugin-JFC,GUIRipper-Core" />
+            value="GUITARModel-Plugin-Sikuli,GUIRipper-Core-Sikuli" />
   <path id="dependency_list.buildfiles">
-    <fileset file="${root.dir}/GUITARModel-Plugin-JFC/install/build.xml" />
-    <fileset file="${root.dir}/GUIRipper-Core/install/build.xml" />
+    <fileset file="${root.dir}/GUITARModel-Plugin-Sikuli/install/build.xml" />
+    <fileset file="${root.dir}/GUIRipper-Core-Sikuli/install/build.xml" />
   </path>
 
   <path id="classpath">
